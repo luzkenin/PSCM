@@ -1,4 +1,26 @@
 function Find-PSCMUpdates {
+    <#
+	.SYNOPSIS 
+    Filter for Microsoft Update products and categories
+	.DESCRIPTION 
+	Filter for Microsoft Update products and categories. You can specify multiple products and categories.
+    .PARAMETER IncludeProducts
+    How many days back you want to search
+    .PARAMETER IncludeProducts
+    Products you want to include in the search
+    .PARAMETER ExcludedProducts
+    Products you want to exclude in the search
+    .PARAMETER IncludedUpdateCategories
+    Categories you want to include in the search
+    .PARAMETER ExcludedUpdateCategories
+    Categories you want to exclude in the search
+    .PARAMETER CIMSessionHash
+    Hash for CIMSession. You can use Set-PSCMCIMSession to easily assign a variable the CIMSession hash.
+    .EXAMPLE
+    Find-PSCMUpdates -DatePostedMin 40 -IncludedProducts 'Windows Server' -IncludedCategories 'Security Update'
+    .EXAMPLE
+    Find-PSCMUpdates -DatePostedMin 40 -IncludedProducts "Office 2013","Windows 7" -IncludedUpdateCategories "Security Updates"
+    #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, ValueFromPipeline)]
@@ -56,7 +78,7 @@ function Find-PSCMUpdates {
                     $FilterForUpdateCategory += "`$_.LocalizedCategoryInstanceNames -notlike ""*$Category*"""
                 }
             }
-            $JoinProduct = $FilterForProduct -join " -and "
+            $JoinProduct = $FilterForProduct -join " -or "
             $JoinCategory = $FilterForUpdateCategory -join " -or "
             $JoinFilter = $JoinProduct, $JoinCategory -join " -and "
             $ScriptBlock = [scriptblock]::Create( $JoinFilter )
