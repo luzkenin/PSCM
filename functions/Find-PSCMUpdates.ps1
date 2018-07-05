@@ -4,37 +4,35 @@ function Find-PSCMUpdates {
     Filter for Microsoft Update products and categories
 	.DESCRIPTION 
 	Filter for Microsoft Update products and categories. You can specify multiple products and categories.
-    .PARAMETER IncludeProducts
+    .PARAMETER DatePostedMin
     How many days back you want to search
-    .PARAMETER IncludeProducts
+    .PARAMETER IncludeProduct
     Products you want to include in the search
-    .PARAMETER ExcludedProducts
+    .PARAMETER ExcludedProduct
     Products you want to exclude in the search
-    .PARAMETER IncludedUpdateCategories
+    .PARAMETER IncludedUpdateCategory
     Categories you want to include in the search
-    .PARAMETER ExcludedUpdateCategories
+    .PARAMETER ExcludedUpdateCategory
     Categories you want to exclude in the search
-    .PARAMETER CIMSessionHash
-    Hash for CIMSession. You can use Set-PSCMCIMSession to easily assign a variable the CIMSession hash.
     .EXAMPLE
-    Find-PSCMUpdates -DatePostedMin 40 -IncludedProducts 'Windows Server' -IncludedCategories 'Security Update'
+    Find-PSCMUpdates -DatePostedMin 40 -IncludedProduct 'Windows Server' -IncludedCategory 'Security Update'
     .EXAMPLE
-    Find-PSCMUpdates -DatePostedMin 40 -IncludedProducts "Office 2013","Windows 7" -IncludedUpdateCategories "Security Updates"
+    Find-PSCMUpdates -DatePostedMin 40 -IncludedProduct "Office 2013","Windows 7" -IncludedUpdateCategory "Security Updates"
     #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory, ValueFromPipeline)]
         $DatePostedMin,
         [Parameter(ValueFromPipeline)]
-        $IncludedProducts,
+        $IncludedProduct,
         [Parameter(ValueFromPipeline)]
-        $ExcludedProducts,
-        [Parameter(ValueFromPipeline)]
-        [ValidateSet('Critical Updates','Security Updates','Definition Updates','Update Rollups','Service Packs','Tools','Feature Packs','Updates')]
-        $IncludedUpdateCategories,
+        $ExcludedProduct,
         [Parameter(ValueFromPipeline)]
         [ValidateSet('Critical Updates','Security Updates','Definition Updates','Update Rollups','Service Packs','Tools','Feature Packs','Updates')]
-        $ExcludedUpdateCategories
+        $IncludedUpdateCategory,
+        [Parameter(ValueFromPipeline)]
+        [ValidateSet('Critical Updates','Security Updates','Definition Updates','Update Rollups','Service Packs','Tools','Feature Packs','Updates')]
+        $ExcludedUpdateCategory
     )
     
     begin {
@@ -46,34 +44,34 @@ function Find-PSCMUpdates {
         $date = get-date
         
         $AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin ($date.AddDays(-$DatePostedMin)) -fast -IsExpired $false -IsSuperseded $false
-        if($IncludedProducts -or $ExcludedProducts -or $IncludedUpdateCategories -or $ExcludedUpdateCategories)
+        if($IncludedProduct -or $ExcludedProduct -or $IncludedUpdateCategory -or $ExcludedUpdateCategory)
         {
             $FilterForProduct = @()
             $FilterForUpdateCategory = @()
-            if($IncludedProducts)
+            if($IncludedProduct)
             {
-                foreach($Product in $IncludedProducts)
+                foreach($Product in $IncludedProduct)
                 {
                     $FilterForProduct += "`$_.localizeddisplayname -like ""*$product*"""
                 }
             }
-            if($ExcludedProducts)
+            if($ExcludedProduct)
             {
-                foreach($Product in $ExcludedProducts)
+                foreach($Product in $ExcludedProduct)
                 {
                     $FilterForProduct += "`$_.localizeddisplayname -notlike ""*$product*"""
                 }
             }
-            if($IncludedUpdateCategories)
+            if($IncludedUpdateCategory)
             {
-                foreach($Category in $IncludedUpdateCategories)
+                foreach($Category in $IncludedUpdateCategory)
                 {
                     $FilterForUpdateCategory += "`$_.LocalizedCategoryInstanceNames -like ""*$Category*"""
                 }
             }
-            if($ExcludedUpdateCategories)
+            if($ExcludedUpdateCategory)
             {
-                foreach($Category in $ExcludedUpdateCategories)
+                foreach($Category in $ExcludedUpdateCategory)
                 {
                     $FilterForUpdateCategory += "`$_.LocalizedCategoryInstanceNames -notlike ""*$Category*"""
                 }
