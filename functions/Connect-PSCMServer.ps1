@@ -1,9 +1,9 @@
 function Connect-PSCMServer {
     <#
     .SYNOPSIS 
-    Connects to SCCM Server and loads PSDrive for CMSite
-	.DESCRIPTION 
-	Connects to SCCM Server and loads PSDrive for CMSite.
+    Imports ConfigurationManager module and creates a PSDrive for the SiteServer
+    .DESCRIPTION 
+    Imports ConfigurationManager module and creates a PSDrive for the SiteServer then sets location to that drive
     .PARAMETER SiteCode
     SiteCode of SCCM site
     .PARAMETER ProviderMachineName
