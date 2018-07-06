@@ -30,7 +30,7 @@ Author = 'Joseph Warren'
 Copyright = '(c) 2018 Joseph Warren All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'Powershell module to aid in deploying updates.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -77,7 +77,6 @@ FunctionsToExport = @(
     'Find-PSCMUpdates'
     'Get-PSCMSoftwareUpdateProductCategory'
     'Connect-PSCMServer'
-    #'Write-PSCMLog'
     #'Get-PSCMPatchTuesday'
     #'Add-PSCMSoftwareUpdateDeployment'
     'Get-PSCMCIMSession'
