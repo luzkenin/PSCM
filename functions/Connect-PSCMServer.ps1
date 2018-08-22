@@ -16,6 +16,7 @@ function Connect-PSCMServer {
 	#>
 	[CmdletBinding()]
 	param (
+		[Parameter(Mandatory)]
 		$SiteCode, 
 		$ProviderMachineName = "localhost"
 	)
