@@ -1,4 +1,4 @@
-function Get-PSCMCIMSession
+function New-PSCMCIMSession
 {
 	<#
 	.SYNOPSIS
@@ -10,7 +10,7 @@ function Get-PSCMCIMSession
 	.PARAMETER Computername
 	SCCM Server name
 	.EXAMPLE
-	$CIMSession = Get-PSCMCIMSession -SiteCode PRI -ComputerName SCCMServer
+	$CIMSession = New-PSCMCIMSession -SiteCode PRI -ComputerName SCCMServer
 	#>
 	[CmdletBinding()]
 	param (
