@@ -21,8 +21,12 @@ function Find-PSCMUpdates {
 	#>
 	[CmdletBinding()]
 	param (
-		[Parameter(Mandatory, ValueFromPipeline)]
+		[Parameter(ParameterSetName='DateRange',ValueFromPipeline)]
 		$DatePostedMin,
+		[Parameter(ParameterSetName='YearRange',ValueFromPipeline)]
+		$Year,
+		[Parameter(ParameterSetName='MonthRange',ValueFromPipeline)]
+		[datetime]$Month,
 		[Parameter(ValueFromPipeline)]
 		$IncludedProduct,
 		[Parameter(ValueFromPipeline)]
@@ -41,9 +45,24 @@ function Find-PSCMUpdates {
 	process
 	{
 		
-		$date = get-date
-		
-		$AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin ($date.AddDays(-$DatePostedMin)) -fast -IsExpired $false -IsSuperseded $false
+		$now = get-date
+		if($DatePostedMin)
+		{
+			$AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin ($now.AddDays(-$DatePostedMin)) -fast -IsExpired $false -IsSuperseded $false
+		}
+		elseif($Year)
+		{
+			$StartOfYear = Get-Date -Year $year -Month 1 -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0
+			$EndOfYear = ($StartOfYear).AddMonths(12).addticks(-1)
+			$AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin $StartOfYear -DatePostedMax $EndOfYear -fast -IsExpired $false -IsSuperseded $false
+		}
+		elseif($Month)
+		{
+			$StartOfMonth = Get-Date -Year $Month.Year -Month $Month.Month -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0
+			$EndOfMonth = ($StartOfMonth).AddMonths(1).addticks(-1)
+			$AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin $StartOfMonth -DatePostedMax $EndOfMonth -fast -IsExpired $false -IsSuperseded $false
+		}
+
 		if($IncludedProduct -or $ExcludedProduct -or $IncludedUpdateCategory -or $ExcludedUpdateCategory)
 		{
 			$FilterForProduct = @()
