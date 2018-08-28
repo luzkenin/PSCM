@@ -76,12 +76,24 @@ function Find-PSCMUpdates {
 					$FilterForUpdateCategory += "`$_.LocalizedCategoryInstanceNames -notlike ""*$Category*"""
 				}
 			}
+			
 			$JoinProduct = $FilterForProduct -join " -and "
 			$JoinCategory = $FilterForUpdateCategory -join " -and "
-			$JoinFilter = $JoinProduct, $JoinCategory -join " -and "
+			if($FilterForProduct -and $FilterForUpdateCategory)
+			{
+				$JoinFilter = $JoinProduct, $JoinCategory -join " -and "
+			}
+			elseif($FilterForProduct)
+			{
+				$JoinFilter = $JoinProduct
+			}
+			elseif($FilterForUpdateCategory)
+			{
+				$JoinFilter = $JoinCategory
+			}
 			$ScriptBlock = [scriptblock]::Create( $JoinFilter )
 		
-			$AllUpdateList | Where-Object -FilterScript $ScriptBlock
+			$AllUpdateList.where({$ScriptBlock})
 		}
 		else
 		{
