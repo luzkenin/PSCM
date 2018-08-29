@@ -8,16 +8,18 @@ function Get-PSCMSoftwareUpdateProductCategory
 	.PARAMETER IncludeProduct
 	Products you want to include in the search
 	.PARAMETER CIMSessionHash
-	Use Set-PSCMCIMSession to set a variable to CIMSessionHash
+	Use New-PSCMCIMSession to set a variable to CIMSessionHash
 	.EXAMPLE
-	Get-PSCMSoftwareUpdateProductCategory -IncludeProducts "Office 2013","Windows 7","Windows Server 2008 R2", "Windows Server 2012 R2", "Windows Server 2016" -CIMSessionHash $CIMSessionHash
+	Get-PSCMSoftwareUpdateProductCategory -IncludeProduct "Office 2013","Windows 7","Windows Server 2008 R2", "Windows Server 2012 R2", "Windows Server 2016" -CIMSessionHash $CIMSessionHash
 #>
 	[CmdletBinding()]
 		param (
-		[Parameter(Mandatory, ValueFromPipeline)]
+		[Parameter(ValueFromPipeline)]
 		$IncludeProduct,
-		[Parameter(Mandatory, ValueFromPipeline)]
-		[hashtable]$CIMSessionHash
+		[Parameter(ValueFromPipeline)]
+		$ExcludeProduct,
+		[Parameter(ValueFromPipeline)]
+		[hashtable]$CIMSessionHash = $PSCMCIMSessionHash
 	)
 
 	begin {
@@ -27,14 +29,26 @@ function Get-PSCMSoftwareUpdateProductCategory
 	{
 		$productcategories = Get-CimInstance -ClassName SMS_UpdateCategoryInstance -Filter 'CategoryTypeName="Product"' @CIMSessionHash
 		$FilterForProductCategory = @()
-		foreach($Product in $IncludeProduct)
+		if($IncludeProduct)
 		{
-			$FilterForProductCategory += "`$_.LocalizedCategoryInstanceName -eq ""$product"""
+			foreach($Product in $IncludeProduct)
+			{
+				$FilterForProductCategory += "`$_.LocalizedCategoryInstanceName -eq ""$product"""
+			}
 		}
+		if($ExcludeProduct)
+		{
+			foreach($Product in $ExcludeProduct)
+			{
+				$FilterForProductCategory += "`$_.LocalizedCategoryInstanceName -ne ""$product"""
+			}
+		}
+
 		$Join = $FilterForProductCategory -join " -or "
 		$ScriptBlock = [scriptblock]::Create( $Join )
 
-		$productcategories | Where-Object -FilterScript $ScriptBlock
+		#$productcategories | Where-Object -FilterScript $ScriptBlock
+		$productcategories.where($ScriptBlock)
 	}
 	end
 	{
