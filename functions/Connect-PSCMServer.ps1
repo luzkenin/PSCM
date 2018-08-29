@@ -17,7 +17,7 @@ function Connect-PSCMServer {
 	[CmdletBinding()]
 	param (
 		[Parameter(Mandatory)]
-		$SiteCode, 
+		$SiteCode,
 		$ProviderMachineName = "localhost"
 	)
 	
@@ -38,6 +38,9 @@ function Connect-PSCMServer {
 		}
 
 		Set-Location "$($SiteCode):\" -ErrorAction Stop
+		#build globals
+		$Global:SiteCode = $SiteCode
+		$Global:PSCMCIMSessionHash = New-PSCMCIMSession -SiteCode $sitecode -Computername (Get-CMSite).ServerName
 	}
 	end
 	{
