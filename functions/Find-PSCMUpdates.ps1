@@ -6,6 +6,10 @@ function Find-PSCMUpdates {
 	Filter for Microsoft Update products and categories. You can specify multiple products and categories.
 	.PARAMETER DatePostedMin
 	How many days back you want to search
+	.PARAMETER Year
+	Specify year
+	.PARAMETER Month
+	Specify datetime with month and year. I.E. (get-date -Year 2017 -Month 6)
 	.PARAMETER IncludeProduct
 	Products you want to include in the search
 	.PARAMETER ExcludedProduct
@@ -44,7 +48,6 @@ function Find-PSCMUpdates {
 	
 	process
 	{
-		
 		$now = get-date
 		if($DatePostedMin)
 		{
@@ -71,28 +74,28 @@ function Find-PSCMUpdates {
 			{
 				foreach($Product in $IncludedProduct)
 				{
-					$FilterForProduct += "`$_.localizeddisplayname -like ""*$product*"""
+					$FilterForProduct += "`$PSItem.LocalizedDisplayName -like ""*$product*"""
 				}
 			}
 			if($ExcludedProduct)
 			{
 				foreach($Product in $ExcludedProduct)
 				{
-					$FilterForProduct += "`$_.localizeddisplayname -notlike ""*$product*"""
+					$FilterForProduct += "`$PSItem.LocalizedDisplayName -notlike ""*$product*"""
 				}
 			}
 			if($IncludedUpdateCategory)
 			{
 				foreach($Category in $IncludedUpdateCategory)
 				{
-					$FilterForUpdateCategory += "`$_.LocalizedCategoryInstanceNames -like ""*$Category*"""
+					$FilterForUpdateCategory += "`$PSItem.LocalizedCategoryInstanceNames -eq ""$Category"""
 				}
 			}
 			if($ExcludedUpdateCategory)
 			{
 				foreach($Category in $ExcludedUpdateCategory)
 				{
-					$FilterForUpdateCategory += "`$_.LocalizedCategoryInstanceNames -notlike ""*$Category*"""
+					$FilterForUpdateCategory += "`$PSItem.LocalizedCategoryInstanceNames -ne ""$Category"""
 				}
 			}
 			
@@ -111,8 +114,8 @@ function Find-PSCMUpdates {
 				$JoinFilter = $JoinCategory
 			}
 			$ScriptBlock = [scriptblock]::Create( $JoinFilter )
-		
-			$AllUpdateList.where({$ScriptBlock})
+
+			$AllUpdateList.Where($ScriptBlock)
 		}
 		else
 		{
