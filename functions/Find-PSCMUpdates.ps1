@@ -99,8 +99,8 @@ function Find-PSCMUpdates {
 				}
 			}
 			
-			$JoinProduct = $FilterForProduct -join " -and "
-			$JoinCategory = $FilterForUpdateCategory -join " -and "
+			$JoinProduct = $FilterForProduct -join " -or "
+			$JoinCategory = $FilterForUpdateCategory -join " -or "
 			if($FilterForProduct -and $FilterForUpdateCategory)
 			{
 				$JoinFilter = $JoinProduct, $JoinCategory -join " -and "
