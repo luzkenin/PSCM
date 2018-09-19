@@ -27,7 +27,7 @@ function Sync-PSCMMetaData {
 		Sync-CMSoftwareUpdate -FullSync $FullSync
 
 		do {
-			sleep -Seconds 5
+			Start-Sleep -Seconds 5
 			$SyncStatus = Get-CMComponentStatusMessage -ComponentName SMS_WSUS_SYNC_MANAGER -SiteCode $sitecode -ViewingPeriod ((Get-Date).AddMinutes(-[System.TimeZone]::CurrentTimeZone.GetUtcOffset([datetime]::Now).TotalMinutes - 1)) | sort time |select -Last 1
 			$OldComponentStatus = $ComponentStatus
 			switch ($SyncStatus.MessageID)
