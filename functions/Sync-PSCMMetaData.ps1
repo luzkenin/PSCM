@@ -4,10 +4,13 @@ function Sync-PSCMMetaData {
 	Syncs metadata from the parent WSUS server and waits until its done.
 	.DESCRIPTION 
 	Sync-CMSoftwareUpdate does not wait and gives no output so I made this to let you sync and wait until the sync is done before going on to something else.
+	.PARAMETER FullSync
+	Indicates whether to perform a complete synchronization of all updates or a delta synchronization.
 	#>
 	[CmdletBinding()]
 	param (
-		
+		[Parameter()]
+		[bool]$FullSync = $false
 	)
 	
 	begin
@@ -21,11 +24,11 @@ function Sync-PSCMMetaData {
 	process
 	{
 		Write-PSFMessage -Message "Syncing metadata from parent WSUS" -Level Important
-		Sync-CMSoftwareUpdate -FullSync $True
+		Sync-CMSoftwareUpdate -FullSync $FullSync
 
 		do {
 			sleep -Seconds 5
-			$SyncStatus = Get-CMComponentStatusMessage -ComponentName SMS_WSUS_SYNC_MANAGER -SiteCode $sitecode -viewingperiod ((Get-DAte).AddMinutes(-[System.TimeZone]::CurrentTimeZone.GetUtcOffset([datetime]::Now).TotalMinutes - 1)) | sort time |select -Last 1
+			$SyncStatus = Get-CMComponentStatusMessage -ComponentName SMS_WSUS_SYNC_MANAGER -SiteCode $sitecode -ViewingPeriod ((Get-Date).AddMinutes(-[System.TimeZone]::CurrentTimeZone.GetUtcOffset([datetime]::Now).TotalMinutes - 1)) | sort time |select -Last 1
 			$OldComponentStatus = $ComponentStatus
 			switch ($SyncStatus.MessageID)
 			{
