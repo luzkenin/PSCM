@@ -86,7 +86,6 @@ FunctionsToExport = @(
 	'Copy-PSCMSoftwareUpdateGroup'
 	'Merge-PSCMSoftwareUpdateGroup'
 	'Compare-PSCMSoftwareUpdateGroup'
-	'Sync-PSCMSoftwareUpdate'
 	'Sync-PSCMMetaData'
 )
 
