@@ -25,6 +25,7 @@ function Clear-PSCMSoftwareUpdateGroup {
 	[CmdletBinding(SupportsShouldProcess)]
 	param (
 		[Parameter(Mandatory,ValueFromPipeline)]
+		#[ValidateScript({Get-CMSoftwareUpdateGroup -name $_.LocalizedDisplayName})]
 		$SoftwareUpdateGroup,
 		[Parameter()]
 		[switch]$Superseded,
