@@ -7,9 +7,9 @@ function Find-PSCMUpdates {
 	.PARAMETER DatePostedMin
 	How many days back you want to search
 	.PARAMETER Year
-	Specify year
+	Specify year I.E. (get-date -Year 2017)
 	.PARAMETER Month
-	Specify datetime with month and year. I.E. (get-date -Year 2017 -Month 6)
+	Specify datetime with month and year. I.E. (get-date -Month 6). This will pass a specific month in the current year.
 	.PARAMETER IncludeProduct
 	Products you want to include in the search
 	.PARAMETER ExcludedProduct
@@ -29,7 +29,7 @@ function Find-PSCMUpdates {
 		[int]$DatePostedMin,
 		[Parameter(ParameterSetName='YearRange',ValueFromPipeline)]
 		#need to validate this date
-		$Year,
+		[datetime]$Year,
 		[Parameter(ParameterSetName='MonthRange',ValueFromPipeline)]
 		#need to validate this date
 		[datetime]$Month,
@@ -57,7 +57,7 @@ function Find-PSCMUpdates {
 		}
 		elseif($Year)
 		{
-			$StartOfYear = Get-Date -Year $year -Month 1 -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0
+			$StartOfYear = Get-Date -Year $Year.Year -Month 1 -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0
 			$EndOfYear = ($StartOfYear).AddMonths(12).addticks(-1)
 			$AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin $StartOfYear -DatePostedMax $EndOfYear -fast -IsExpired $false -IsSuperseded $false
 		}
