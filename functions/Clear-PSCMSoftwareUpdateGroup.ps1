@@ -37,20 +37,19 @@ function Clear-PSCMSoftwareUpdateGroup {
 	}
 	
 	process {
-		$SoftwareUpdatesToModify = $SoftwareUpdateGroup | Get-CMSoftwareUpdate -Fast | Where-Object {$_.issuperseded -eq $true -or $_.isexpired -eq $true}
+		$SoftwareUpdatesToModify = $SoftwareUpdateGroup | Get-CMSoftwareUpdate -Fast | Where-Object {$_.IsSuperseded -eq $true -or $_.IsExpired -eq $true}
 		if($SoftwareUpdatesToModify.count -gt 0) {
 			Write-PSFMessage -Message "Found $($SoftwareUpdatesToModify.count) superseded updates in $($SoftwareUpdateGroup.LocalizedDisplayName)" -Level Warning
 			foreach($Update in $SoftwareUpdatesToModify) {
-				$reason = if($Update.issuperseded){"superseded"}elseif($Update.isexpired){"expired"}
 				try {
-					if($Expired -and $PSCmdlet.ShouldProcess($Update.ArticleID,'Remove')) {
-						Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $($Update | Where-Object isexpired -eq $true).CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
-						Write-PSFMessage -Message "Removing KB$($Update.ArticleID) because it was $Reason" -Level Important
+					if($Expired -and $PSCmdlet.ShouldProcess($Update.ArticleID,'Remove') -and $Update.IsExpired -eq $true) {
+						Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $Update.CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
+						Write-PSFMessage -Message "Removing KB$($Update.ArticleID) because it was expired" -Level Important
 					}
-					if($Superseded -and $PSCmdlet.ShouldProcess($Update.ArticleID,'Remove')) {
+					if($Superseded -and $PSCmdlet.ShouldProcess($Update.ArticleID,'Remove') -and $Update.IsSuperseded -eq $true) {
 						if($Update | Where-Object issuperseded -eq $true) {
-							Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $($Update | Where-Object issuperseded -eq $true).CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
-							Write-PSFMessage -Message "Removing KB$($Update.ArticleID) because it was $Reason" -Level Important
+							Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $Update.CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
+							Write-PSFMessage -Message "Removing KB$($Update.ArticleID) because it was superseded" -Level Important
 						}
 					}
 				}
