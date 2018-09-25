@@ -39,6 +39,7 @@ function Copy-PSCMSoftwareUpdateGroup
 			catch
 			{
 				Stop-PSFFunction -Message "Failure" -ErrorRecord $_
+				return
 			}
 		}
 		Write-PSFMessage "Copying $($UpdatesInSource.count) updates from $Source to $Target" -Level Important

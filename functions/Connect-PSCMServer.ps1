@@ -18,7 +18,8 @@ function Connect-PSCMServer {
 	param (
 		[Parameter(Mandatory)]
 		$SiteCode,
-		$ProviderMachineName = "localhost"
+		[Parameter(Mandatory)]
+		$SCCMServer
 	)
 	
 	begin

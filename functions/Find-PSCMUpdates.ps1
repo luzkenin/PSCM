@@ -26,10 +26,12 @@ function Find-PSCMUpdates {
 	[CmdletBinding()]
 	param (
 		[Parameter(ParameterSetName='DateRange',ValueFromPipeline)]
-		$DatePostedMin,
+		[int]$DatePostedMin,
 		[Parameter(ParameterSetName='YearRange',ValueFromPipeline)]
+		#need to validate this date
 		$Year,
 		[Parameter(ParameterSetName='MonthRange',ValueFromPipeline)]
+		#need to validate this date
 		[datetime]$Month,
 		[Parameter(ValueFromPipeline)]
 		$IncludedProduct,

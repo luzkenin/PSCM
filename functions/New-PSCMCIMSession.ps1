@@ -16,7 +16,7 @@ function New-PSCMCIMSession
 	param (
 		[Parameter(Mandatory)]
 		[string]$SiteCode,
-		[string]$Computername = "localhost"
+		[string]$Computername = (get-cmsite).servername
 	)
 	
 	begin {

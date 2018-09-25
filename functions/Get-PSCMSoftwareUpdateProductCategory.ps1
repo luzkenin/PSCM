@@ -49,6 +49,10 @@ function Get-PSCMSoftwareUpdateProductCategory
 
 		#$productcategories | Where-Object -FilterScript $ScriptBlock
 		$productcategories.where($ScriptBlock)
+		
+		if($null -eq $IncludeProduct -and $null -eq $ExcludeProduct) {
+			$productcategories
+		}
 	}
 	end
 	{
