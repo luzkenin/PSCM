@@ -37,32 +37,33 @@ function Clear-PSCMSoftwareUpdateGroup {
 	}
 	
 	process {
-		$SoftwareUpdatesToModify = $SoftwareUpdateGroup | Get-CMSoftwareUpdate -Fast | Where-Object {$_.IsSuperseded -eq $true -or $_.IsExpired -eq $true}
-		if($SoftwareUpdatesToModify.count -gt 0) {
-			Write-PSFMessage -Message "Found $($SoftwareUpdatesToModify.count) superseded updates in $($SoftwareUpdateGroup.LocalizedDisplayName)" -Level Warning
-			foreach($Update in $SoftwareUpdatesToModify) {
+		$SoftwareUpdatesToModify = $SoftwareUpdateGroup | Get-CMSoftwareUpdate -Fast
+		$SupersededUpdates = $SoftwareUpdatesToModify | Where-Object {$_.IsSuperseded -eq $true -and $_.IsExpired -eq $false}
+		$ExpiredUpdates = $SoftwareUpdatesToModify | Where-Object {$_.IsExpired -eq $true}
+
+		foreach($Update in $SupersededUpdates){
+			if($Superseded -and $PSCmdlet.ShouldProcess("KB$($Update.ArticleID)", 'Remove')){
 				try {
-					if($Expired -and $PSCmdlet.ShouldProcess($Update.ArticleID,'Remove') -and $Update.IsExpired -eq $true) {
-						Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $Update.CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
-						Write-PSFMessage -Message "Removing KB$($Update.ArticleID) because it was expired" -Level Important
-					}
-					if($Superseded -and $PSCmdlet.ShouldProcess($Update.ArticleID,'Remove') -and $Update.IsSuperseded -eq $true) {
-						if($Update | Where-Object issuperseded -eq $true) {
-							Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $Update.CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
-							Write-PSFMessage -Message "Removing KB$($Update.ArticleID) because it was superseded" -Level Important
-						}
-					}
+					Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $Update.CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
+					Write-PSFMessage -Message "Removed KB$($Update.ArticleID) because it was superseded" -Level Important
 				}
 				catch {
-					Stop-PSFFunction -Message "Could not remove KB$($Update.ArticleID)" -ErrorRecord $_ -Continue
+					Stop-PSFFunction -Message "Could not remove KB$($Update.ArticleID)" -ErrorRecord $_ -EnableException -Continue
 				}
 			}
 		}
-		else {
-			Write-PSFMessage -Message "Found $($SoftwareUpdatesToModify.count) superseded or expired updates in $($SoftwareUpdateGroup.LocalizedDisplayName)" -Level Important
+		foreach($Update in $ExpiredUpdates){
+			if($Superseded -and $PSCmdlet.ShouldProcess("KB$($Update.ArticleID)", 'Remove')){
+				try {
+					Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $Update.CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
+					Write-PSFMessage -Message "Removed KB$($Update.ArticleID) because it was expired" -Level Important
+				}
+				catch {
+					Stop-PSFFunction -Message "Could not remove KB$($Update.ArticleID)" -ErrorRecord $_ -EnableException -Continue
+				}
+			}
 		}
 	}
-	
 	end {
 	}
 }
