@@ -5,26 +5,26 @@ Powershell module to aid in deploying updates from SCCM.
 Add-PSCMObjectToCollection
 * Simplifies adding computers to collections.
 
-Clear-PSCMSoftwareUpdateGroup.ps1
+Clear-PSCMSoftwareUpdateGroup
 * Clear a software update group of superseded or expired updates.
 
-Connect-PSCMServer.ps1
+Connect-PSCMServer
 * Loads ConfigurationManager module and creates the PSDrive for the site.
 
-Copy-PSCMSoftwareUpdateGroup.ps1
+Copy-PSCMSoftwareUpdateGroup
 * Copies a software update group. Does not copy deployments.
 
-Find-PSCMUpdates.ps1
+Find-PSCMUpdates
 * Finds updates with simplified query.
 
 Get-PSCMSoftwareUpdateProductCategory.ps1
 * Shows product categories for specified products. Useful for getting CategoryInstance_UniqueID.
 
-Merge-PSCMSoftwareUpdateGroup.ps1
+Merge-PSCMSoftwareUpdateGroup
 * Merge two software update groups.
 
-New-PSCMCIMSession.ps1
+New-PSCMCIMSession
 * Creates a CIM hash for a CIMSession for SCCM.
 
-Sync-PSCMMetaData.ps1
+Sync-PSCMMetaData
 * Wrapper for Sync-CMSoftwareUpdate that will give you output for what is happening and wait until its done.
