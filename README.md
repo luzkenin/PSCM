@@ -17,7 +17,7 @@ Copy-PSCMSoftwareUpdateGroup
 Find-PSCMUpdates
 * Finds updates with simplified query.
 
-Get-PSCMSoftwareUpdateProductCategory.ps1
+Get-PSCMSoftwareUpdateProductCategory
 * Shows product categories for specified products. Useful for getting CategoryInstance_UniqueID.
 
 Merge-PSCMSoftwareUpdateGroup
