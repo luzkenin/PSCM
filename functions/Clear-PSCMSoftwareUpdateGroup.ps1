@@ -53,7 +53,7 @@ function Clear-PSCMSoftwareUpdateGroup {
 			}
 		}
 		foreach($Update in $ExpiredUpdates){
-			if($Superseded -and $PSCmdlet.ShouldProcess("KB$($Update.ArticleID)", 'Remove')){
+			if($Expired -and $PSCmdlet.ShouldProcess("KB$($Update.ArticleID)", 'Remove')){
 				try {
 					Remove-CMSoftwareUpdateFromGroup -SoftwareUpdateId $Update.CI_ID -SoftwareUpdateGroupId $SoftwareUpdateGroup.CI_ID -Confirm:$false -Force
 					Write-PSFMessage -Message "Removed KB$($Update.ArticleID) because it was expired" -Level Important
