@@ -27,7 +27,7 @@ Author = 'Joseph Warren'
 # CompanyName = 'Unknown'
 
 # Copyright statement for this module
-Copyright = '(c) 2018 Joseph Warren All rights reserved.'
+Copyright = '(c) 2019 Joseph Warren All rights reserved.'
 
 # Description of the functionality provided by this module
 # Description = ''
@@ -71,24 +71,7 @@ RequiredModules = @(
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @(
-	#'Write-PSCMLog'
-	'Get-PSCMPatchTuesday'
-	#'Add-PSCMSoftwareUpdateDeployment'
-	#'Merge-SUG'
-	#'Remove-SUG'
-	'Add-PSCMObjectToCollection'
-	'Find-PSCMUpdates'
-	'Get-PSCMSoftwareUpdateProductCategory'
-	'Connect-PSCMServer'
-	'Get-PSCMCIMSession'
-	'New-PSCMCIMSession'
-	'Copy-PSCMSoftwareUpdateGroup'
-	'Merge-PSCMSoftwareUpdateGroup'
-	'Compare-PSCMSoftwareUpdateGroup'
-	'Sync-PSCMMetaData'
-	'Clear-PSCMSoftwareUpdateGroup'
-)
+FunctionsToExport = '*'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -114,13 +97,13 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		# Tags = @()
+		Tags = @('SCCM')
 
 		# A URL to the license for this module.
-		# LicenseUri = ''
+		LicenseUri = 'https://github.com/luzkenin/PSCM/blob/master/LICENSE'
 
 		# A URL to the main website for this project.
-		# ProjectUri = ''
+		ProjectUri = 'https://github.com/luzkenin/PSCM'
 
 		# A URL to an icon representing this module.
 		# IconUri = ''
