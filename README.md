@@ -1,6 +1,8 @@
 # PSCM
 Powershell module to aid in deploying updates from SCCM.
 
+Authored by Joseph Warren
+
 ## Functions
 Add-PSCMObjectToCollection
 * Simplifies adding computers to collections.
