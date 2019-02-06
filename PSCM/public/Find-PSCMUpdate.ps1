@@ -1,40 +1,40 @@
-function Find-PSCMUpdates
+function Find-PSCMUpdate
 {
     <#
-	.SYNOPSIS 
-	Filter for Microsoft Update products and categories
+    .SYNOPSIS
+    Filter for Microsoft Update products and categories
 
-	.DESCRIPTION 
-	Filter for Microsoft Update products and categories. You can specify multiple products and categories.
+    .DESCRIPTION
+    Filter for Microsoft Update products and categories. You can specify multiple products and categories.
 
-	.PARAMETER DatePostedMin
-	How many days back you want to search
+    .PARAMETER DatePostedMin
+    How many days back you want to search
 
-	.PARAMETER Year
-	Specify year I.E. (get-date -Year 2017)
+    .PARAMETER Year
+    Specify year I.E. (get-date -Year 2017)
 
-	.PARAMETER Month
-	Specify datetime with month and year. I.E. (get-date -Month 6). This will pass a specific month in the current year.
+    .PARAMETER Month
+    Specify datetime with month and year. I.E. (get-date -Month 6). This will pass a specific month in the current year.
 
-	.PARAMETER IncludedProduct
-	Products you want to include in the search
+    .PARAMETER IncludedProduct
+    Products you want to include in the search
 
-	.PARAMETER ExcludedProduct
-	Products you want to exclude in the search
+    .PARAMETER ExcludedProduct
+    Products you want to exclude in the search
 
-	.PARAMETER IncludedUpdateCategory
-	Categories you want to include in the search
+    .PARAMETER IncludedUpdateCategory
+    Categories you want to include in the search
 
-	.PARAMETER ExcludedUpdateCategory
-	Categories you want to exclude in the search
+    .PARAMETER ExcludedUpdateCategory
+    Categories you want to exclude in the search
 
-	.EXAMPLE
-	Find-PSCMUpdates -DatePostedMin 40 -IncludedProduct 'Windows Server' -IncludedCategory 'Security Update'
+    .EXAMPLE
+    Find-PSCMUpdates -DatePostedMin 40 -IncludedProduct 'Windows Server' -IncludedCategory 'Security Update'
 
-	.EXAMPLE
-	Find-PSCMUpdates -DatePostedMin 40 -IncludedProduct "Office 2013","Windows 7" -IncludedUpdateCategory "Security Updates"
+    .EXAMPLE
+    Find-PSCMUpdates -DatePostedMin 40 -IncludedProduct "Office 2013","Windows 7" -IncludedUpdateCategory "Security Updates"
 
-	#>
+    #>
     [CmdletBinding()]
     param (
         [Parameter(ParameterSetName = 'DateRange', ValueFromPipeline)]
@@ -56,11 +56,11 @@ function Find-PSCMUpdates
         [ValidateSet('Critical Updates', 'Security Updates', 'Definition Updates', 'Update Rollups', 'Service Packs', 'Tools', 'Feature Packs', 'Updates')]
         $ExcludedUpdateCategory
     )
-	
+
     begin
     {
     }
-	
+
     process
     {
         $now = get-date
@@ -113,7 +113,7 @@ function Find-PSCMUpdates
                     $FilterForUpdateCategory += "`$PSItem.LocalizedCategoryInstanceNames -ne ""$Category"""
                 }
             }
-			
+
             $JoinProduct = $FilterForProduct -join " -and "
             $JoinCategory = $FilterForUpdateCategory -join " -and "
             if ($FilterForProduct -and $FilterForUpdateCategory)
