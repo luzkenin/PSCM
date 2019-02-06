@@ -1,4 +1,5 @@
-function Set-PSCMSoftwareUpdateGroupDeploymentDeadline {
+function Set-PSCMSoftwareUpdateGroupDeploymentDeadline
+{
     <#
     .SYNOPSIS
     Short description
@@ -25,7 +26,7 @@ function Set-PSCMSoftwareUpdateGroupDeploymentDeadline {
     This function will probably be renamed and reworked
     #>
     
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         # Parameter help description
         [Parameter(Mandatory)]
@@ -36,8 +37,8 @@ function Set-PSCMSoftwareUpdateGroupDeploymentDeadline {
         [datetime]
         $DateTime,
         # Parameter help description
-        [ValidateSet('Sunday,''Monday','Tuesday','Wednesday','Thursday','Friday','Saturday')]
-        [Parameter(Mandatory,ParameterSetName = 'Simple')]
+        [ValidateSet('Sunday,''Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')]
+        [Parameter(Mandatory, ParameterSetName = 'Simple')]
         [string]
         $DayOfWeek,
         # Parameter help description
@@ -47,18 +48,26 @@ function Set-PSCMSoftwareUpdateGroupDeploymentDeadline {
         $TimeOfDay = "00:00"
     )
     
-    begin {
+    begin
+    {
     }
     
-    process {
-        try {
-            Get-CMUpdateGroupDeployment -Name $UpdateGroupName | Set-CMSoftwareUpdateDeployment -DeploymentExpireDateTime (Get-NextDay -Day $DayOfWeek -Time $TimeOfDay)
-        }
-        catch {
-            throw $_
+    process
+    {
+        if ($PSCmdlet.ShouldProcess("bleh"))
+        {
+            try
+            {
+                Get-CMUpdateGroupDeployment -Name $UpdateGroupName | Set-CMSoftwareUpdateDeployment -DeploymentExpireDateTime (Get-NextDay -Day $DayOfWeek -Time $TimeOfDay)
+            }
+            catch
+            {
+                throw $_
+            }
         }
     }
     
-    end {
+    end
+    {
     }
 }
