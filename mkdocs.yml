@@ -1,0 +1,9 @@
+site_name: PSCM
+repo_url: https://github.com/luzkenin/PSCM
+theme: readthedocs
+pages:
+  - Home: index.md
+  - PSCM Basics:
+    - What is PSCM: about.md
+    - Quick Start: Quick-Start-Installation-and-Example.md
+  - Acknowledgements: acknowledgements.md
