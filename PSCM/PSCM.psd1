@@ -34,7 +34,7 @@
         PSData = @{
             # Tags = @()
             # LicenseUri = ''
-            # ProjectUri = ''
+            ProjectUri = 'https://github.com/luzkenin/PSCM'
             # IconUri = ''
             # ReleaseNotes = ''
         }
