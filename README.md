@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/uhf2p9vogl049fdx?svg=true)](https://ci.appveyor.com/project/luzkenin/pscm)
+
 # PSCM
 
 Powershell module to aid in deploying updates from SCCM.
