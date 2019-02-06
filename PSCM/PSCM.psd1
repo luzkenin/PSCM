@@ -9,7 +9,7 @@
     Author            = 'Joseph Warren'
     CompanyName       = 'Unknown'
     Copyright         = '(c) Joseph Warren. All rights reserved.'
-    Description       = ''
+    Description       = 'Powershell module to aid in deploying updates from SCCM.'
     FunctionsToExport = @()
     CmdletsToExport   = @()
     VariablesToExport = @()
@@ -32,8 +32,8 @@
     # FileList = @()
     PrivateData       = @{
         PSData = @{
-            # Tags = @()
-            # LicenseUri = ''
+            Tags       = @('SCCM')
+            LicenseUri = 'https://github.com/luzkenin/PSCM/blob/master/LICENSE'
             ProjectUri = 'https://github.com/luzkenin/PSCM'
             # IconUri = ''
             # ReleaseNotes = ''
