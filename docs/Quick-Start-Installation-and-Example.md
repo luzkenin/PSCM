@@ -1,5 +1,7 @@
 # Installing PSCM
 
-    # You can install PSCM from the Powershell Gallery using
+    # Install PSCM from the PowerShell Gallery
     Find-Module PSCM | Install-Module
+
+    #Import Module
     Import-Module PSCM
