@@ -4,7 +4,7 @@
 
 @{
     RootModule        = 'PSCM.psm1'
-    ModuleVersion     = '0.1.0'
+    ModuleVersion     = '0.3.2'
     GUID              = '4e1c82d2-7c23-410f-841d-dce52dbc630e'
     Author            = 'Joseph Warren'
     CompanyName       = 'Unknown'
