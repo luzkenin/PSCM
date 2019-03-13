@@ -2,7 +2,7 @@
 {
   "powershell.codeFormatting.openBraceOnSameLine": false,
   "powershell.codeFormatting.newLineAfterOpenBrace": true,
-  "powershell.codeFormatting.preset": "Allman",
+  "powershell.codeFormatting.preset": "Stroustrup",
   "editor.formatOnSave": true,
   "editor.insertSpaces": true,
   "editor.tabSize": 4,

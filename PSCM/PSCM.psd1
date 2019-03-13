@@ -10,7 +10,19 @@
     CompanyName       = 'Unknown'
     Copyright         = '(c) Joseph Warren. All rights reserved.'
     Description       = 'Powershell module to aid in deploying updates from SCCM.'
-    FunctionsToExport = @()
+    FunctionsToExport = @('Connect-PSCMServer',
+        'Add-PSCMObjectToCollection',
+        'Clear-PSCMSoftwareUpdateGroup',
+        'Copy-PSCMSoftwareUpdateGroup',
+        'Export-PSCMUsageInformation',
+        'Find-PSCMUpdate',
+        'Get-PSCMSoftwareUpdateProductCategory',
+        'Merge-PSCMSoftwareUpdateGroup',
+        'Merge-PSCMSoftwareUpdateGroup',
+        'Save-PSCMUsageData',
+        'Set-PSCMSoftwareUpdateGroupDeploymentDeadline',
+        'Sync-PSCMMetaData',
+        'Get-PSCMServiceConnectionPointMode' )
     CmdletsToExport   = @()
     VariablesToExport = @()
     AliasesToExport   = @()
