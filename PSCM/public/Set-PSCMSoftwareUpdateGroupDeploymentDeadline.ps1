@@ -1,31 +1,30 @@
-function Set-PSCMSoftwareUpdateGroupDeploymentDeadline
-{
+function Set-PSCMSoftwareUpdateGroupDeploymentDeadline {
     <#
     .SYNOPSIS
     Short description
-    
+
     .DESCRIPTION
     Long description
-    
+
     .PARAMETER UpdateGroupName
     Parameter description
-    
+
     .PARAMETER DateTime
     Parameter description
-    
+
     .PARAMETER DayOfWeek
     Parameter description
-    
+
     .PARAMETER TimeOfDay
     Parameter description
-    
+
     .EXAMPLE
     An example
-    
+
     .NOTES
     This function will probably be renamed and reworked
     #>
-    
+
     [CmdletBinding(SupportsShouldProcess)]
     param (
         # Parameter help description
@@ -33,41 +32,34 @@ function Set-PSCMSoftwareUpdateGroupDeploymentDeadline
         [string]
         $UpdateGroupName,
         # Parameter help description
-        [Parameter(Mandatory, ParameterSetName = 'FromGetDate')]
+        [Parameter(Mandatory)]
         [datetime]
-        $DateTime,
+        $DeadlineDateTime,
         # Parameter help description
-        [ValidateSet('Sunday,''Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')]
-        [Parameter(Mandatory, ParameterSetName = 'Simple')]
-        [string]
-        $DayOfWeek,
+        [Parameter(Mandatory)]
+        [datetime]
+        $AvailableDateTime
         # Parameter help description
-        [ValidatePattern("([0-1][0-9]|2[0-3]):[0-5][0-9]")]
-        [Parameter(ParameterSetName = 'Simple')]
-        [string]
-        $TimeOfDay = "00:00"
+        #[ValidateSet('Sunday,''Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')]
+        #[Parameter(Mandatory, ParameterSetName = 'Simple')]
+        #[string]
+        #$DayOfWeek,
+        # Parameter help description
+        #[ValidatePattern("([0-1][0-9]|2[0-3]):[0-5][0-9]")]
+        #[Parameter(ParameterSetName = 'Simple')]
+        #[string]
+        #$TimeOfDay = "00:00"
     )
-    
-    begin
-    {
+
+    begin {
     }
-    
-    process
-    {
-        if ($PSCmdlet.ShouldProcess("bleh"))
-        {
-            try
-            {
-                Get-CMUpdateGroupDeployment -Name $UpdateGroupName | Set-CMSoftwareUpdateDeployment -DeploymentExpireDateTime (Get-NextDay -Day $DayOfWeek -Time $TimeOfDay)
-            }
-            catch
-            {
-                throw $_
-            }
+
+    process {
+        if ($PSCmdlet.ShouldProcess("bleh")) {
+            Get-CMUpdateGroupDeployment -Name $UpdateGroupName | Set-CMSoftwareUpdateDeployment -AvailableDateTime $AvailableDateTime -DeploymentExpireDateTime $DeadlineDateTime
         }
     }
-    
-    end
-    {
+
+    end {
     }
 }

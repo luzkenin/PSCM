@@ -1,4 +1,21 @@
 function Export-PSCMUsageInformation {
+    <#
+    .SYNOPSIS
+    Short description
+    
+    .DESCRIPTION
+    Long description
+    
+    .PARAMETER Path
+    Path to save file.
+    
+    .EXAMPLE
+    An example
+    
+    .NOTES
+    General notes
+    #>
+    
     [CmdletBinding()]
     param (
         # Parameter help description

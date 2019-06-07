@@ -1,16 +1,20 @@
-function New-PSCMCIMSession
-{
+function New-PSCMCIMSession {
     <#
     .SYNOPSIS
     Generates hash for CIMSession
+    
     .DESCRIPTION
     Generates hash for CIMSession.
+
     .PARAMETER SiteCode
     SCCM Site Code
+
     .PARAMETER Computername
     SCCM Server name
+
     .EXAMPLE
     $CIMSession = New-PSCMCIMSession -SiteCode PRI -ComputerName SCCMServer
+
     #>
     [CmdletBinding(SupportsShouldProcess)]
     [OutputType([Hashtable])]
@@ -21,14 +25,11 @@ function New-PSCMCIMSession
         [string]$Computername = (get-cmsite).servername
     )
 
-    begin
-    {
+    begin {
     }
 
-    process
-    {
-        if ($PSCmdlet.ShouldProcess("Creating CIM session hash"))
-        {
+    process {
+        if ($PSCmdlet.ShouldProcess("Creating CIM session hash")) {
             $CIMSessionHash = @{
                 cimsession  = New-CimSession -ComputerName $Computername
                 NameSpace   = "Root\SMS\Site_$SiteCode"
@@ -38,7 +39,6 @@ function New-PSCMCIMSession
         }
     }
 
-    end
-    {
+    end {
     }
 }

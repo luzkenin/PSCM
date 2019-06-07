@@ -1,5 +1,4 @@
-function Find-PSCMUpdate
-{
+function Find-PSCMUpdate {
     <#
     .SYNOPSIS
     Filter for Microsoft Update products and categories
@@ -57,87 +56,68 @@ function Find-PSCMUpdate
         $ExcludedUpdateCategory
     )
 
-    begin
-    {
+    begin {
     }
 
-    process
-    {
+    process {
         $now = get-date
-        if ($DatePostedMin)
-        {
+        if ($DatePostedMin) {
             $AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin ($now.AddDays(-$DatePostedMin)) -fast -IsExpired $false -IsSuperseded $false
         }
-        elseif ($Year)
-        {
+        elseif ($Year) {
             $StartOfYear = Get-Date -Year $Year.Year -Month 1 -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0
             $EndOfYear = ($StartOfYear).AddMonths(12).addticks(-1)
             $AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin $StartOfYear -DatePostedMax $EndOfYear -fast -IsExpired $false -IsSuperseded $false
         }
-        elseif ($Month)
-        {
+        elseif ($Month) {
             $StartOfMonth = Get-Date -Year $Month.Year -Month $Month.Month -Day 1 -Hour 0 -Minute 0 -Second 0 -Millisecond 0
             $EndOfMonth = ($StartOfMonth).AddMonths(1).addticks(-1)
             $AllUpdateList = Get-CMSoftwareUpdate -DatePostedMin $StartOfMonth -DatePostedMax $EndOfMonth -fast -IsExpired $false -IsSuperseded $false
         }
 
-        if ($IncludedProduct -or $ExcludedProduct -or $IncludedUpdateCategory -or $ExcludedUpdateCategory)
-        {
+        if ($IncludedProduct -or $ExcludedProduct -or $IncludedUpdateCategory -or $ExcludedUpdateCategory) {
             $FilterForProduct = @()
             $FilterForUpdateCategory = @()
-            if ($IncludedProduct)
-            {
-                foreach ($Product in $IncludedProduct)
-                {
+            if ($IncludedProduct) {
+                foreach ($Product in $IncludedProduct) {
                     $FilterForProduct += "`$PSItem.LocalizedDisplayName -like ""*$product*"""
                 }
             }
-            if ($ExcludedProduct)
-            {
-                foreach ($Product in $ExcludedProduct)
-                {
+            if ($ExcludedProduct) {
+                foreach ($Product in $ExcludedProduct) {
                     $FilterForProduct += "`$PSItem.LocalizedDisplayName -notlike ""*$product*"""
                 }
             }
-            if ($IncludedUpdateCategory)
-            {
-                foreach ($Category in $IncludedUpdateCategory)
-                {
+            if ($IncludedUpdateCategory) {
+                foreach ($Category in $IncludedUpdateCategory) {
                     $FilterForUpdateCategory += "`$PSItem.LocalizedCategoryInstanceNames -eq ""$Category"""
                 }
             }
-            if ($ExcludedUpdateCategory)
-            {
-                foreach ($Category in $ExcludedUpdateCategory)
-                {
+            if ($ExcludedUpdateCategory) {
+                foreach ($Category in $ExcludedUpdateCategory) {
                     $FilterForUpdateCategory += "`$PSItem.LocalizedCategoryInstanceNames -ne ""$Category"""
                 }
             }
 
             $JoinProduct = $FilterForProduct -join " -and "
             $JoinCategory = $FilterForUpdateCategory -join " -and "
-            if ($FilterForProduct -and $FilterForUpdateCategory)
-            {
+            if ($FilterForProduct -and $FilterForUpdateCategory) {
                 $JoinFilter = $JoinProduct, $JoinCategory -join " -and "
             }
-            elseif ($FilterForProduct)
-            {
+            elseif ($FilterForProduct) {
                 $JoinFilter = $JoinProduct
             }
-            elseif ($FilterForUpdateCategory)
-            {
+            elseif ($FilterForUpdateCategory) {
                 $JoinFilter = $JoinCategory
             }
             $ScriptBlock = [scriptblock]::Create( $JoinFilter )
 
             $AllUpdateList.Where($ScriptBlock)
         }
-        else
-        {
+        else {
             $AllUpdateList
         }
     }
-    end
-    {
+    end {
     }
 }

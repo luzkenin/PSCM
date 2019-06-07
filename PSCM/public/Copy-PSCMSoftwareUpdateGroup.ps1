@@ -1,45 +1,44 @@
-function Copy-PSCMSoftwareUpdateGroup
-{
+function Copy-PSCMSoftwareUpdateGroup {
     <#
 	.SYNOPSIS
-	Copy software update group
+    Copy software update group
+    
 	.DESCRIPTION
-	Copy software update group to new group. Currently does not copy deployments of source SUG.
+    Copy software update group to new group. Currently does not copy deployments of source SUG.
+    
 	.PARAMETER Source
-	Source name of software update group
+    Source name of software update group
+    
 	.PARAMETER Target
-	Target name of software update group
+    Target name of software update group
+    
 	.EXAMPLE
-	Copy-PSCMSoftwareUpdateGroup -Source 7-2018 -Target copy
+    Copy-PSCMSoftwareUpdateGroup -Source 7-2018 -Target copy
+    
 	#>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [ValidateScript( {Get-CMSoftwareUpdateGroup -name $_})]
+        [ValidateScript( { Get-CMSoftwareUpdateGroup -name $_ })]
         [String]$Source,
         [Parameter(Mandatory)]
-        [ValidateScript( {$null -eq (Get-CMSoftwareUpdateGroup -name $_ -erroraction silentlycontinue)})]
+        [ValidateScript( { $null -eq (Get-CMSoftwareUpdateGroup -name $_ -erroraction silentlycontinue) })]
         [String]$Target
     )
 
-    begin
-    {
+    begin {
+        $UpdatesInSource = Get-CMSoftwareUpdateGroup -Name $Source | Get-CMSoftwareUpdate -fast
     }
 
-    process
-    {
-        $UpdatesInSource = Get-CMSoftwareUpdateGroup -Name $Source | Get-CMSoftwareUpdate -fast
+    process {
 
         Write-PSFMessage "Creating new software update group named $Target" -Level Important
-        if ($null -eq (Get-CMSoftwareUpdateGroup -name $Target -erroraction silentlycontinue))
-        {
-            try
-            {
+        if ($null -eq (Get-CMSoftwareUpdateGroup -name $Target -erroraction silentlycontinue)) {
+            try {
                 $CreateSUG = New-CMSoftwareUpdateGroup -Name $Target
                 $CreateSUG | Out-Null
             }
-            catch
-            {
+            catch {
                 Stop-PSFFunction -Message "Failure" -ErrorRecord $_
                 return
             }
@@ -48,8 +47,7 @@ function Copy-PSCMSoftwareUpdateGroup
         $UpdatesInSource | Add-CMSoftwareUpdateToGroup -SoftwareUpdateGroupName $Target
     }
 
-    end
-    {
+    end {
     }
 }
 

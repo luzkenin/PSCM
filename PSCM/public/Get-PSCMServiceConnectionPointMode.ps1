@@ -1,5 +1,6 @@
 function Get-PSCMServiceConnectionPointMode {
     [CmdletBinding()]
+    [outputtype([System.String])]
     param (
 
     )
