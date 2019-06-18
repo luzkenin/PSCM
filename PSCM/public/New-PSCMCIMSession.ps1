@@ -2,7 +2,7 @@ function New-PSCMCIMSession {
     <#
     .SYNOPSIS
     Generates hash for CIMSession
-    
+
     .DESCRIPTION
     Generates hash for CIMSession.
 
@@ -22,7 +22,7 @@ function New-PSCMCIMSession {
         [Parameter(Mandatory)]
         [string]$SiteCode,
         [Parameter()]
-        [string]$Computername = (get-cmsite).servername
+        [string]$Computername = $env:COMPUTERNAME
     )
 
     begin {
