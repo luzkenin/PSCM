@@ -21,9 +21,9 @@ function Connect-PSCMServer {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, Position = 0)]
         $SiteCode,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, Position = 1)]
         $SCCMServer
     )
 

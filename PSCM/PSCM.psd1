@@ -22,7 +22,8 @@
         'Save-PSCMUsageData',
         'Set-PSCMSoftwareUpdateGroupDeploymentDeadline',
         'Sync-PSCMMetaData',
-        'Get-PSCMServiceConnectionPointMode' )
+        'Get-PSCMServiceConnectionPointMode',
+        'Get-PSCMLicenseKey' )
     CmdletsToExport   = @()
     VariablesToExport = @()
     AliasesToExport   = @()
