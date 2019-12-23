@@ -19,7 +19,7 @@ function Get-PSCMLicenseKey {
     [CmdletBinding()]
     param (
         # Parameter help description
-        [Parameter()]
+        [Parameter(Mandatory)]
         [string]
         $ComputerName
     )
@@ -31,11 +31,12 @@ function Get-PSCMLicenseKey {
 
     process {
         if ($ComputerName -eq $env:COMPUTERNAME) {
-            $Value = (get-itemproperty "HKLM:\SOFTWARE\Microsoft\System Center Configuration Manager\2012\Registration").digitalproductid[0x34..0x42]
+            #need to test for these paths first
+            $Value = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\System Center Configuration Manager\2012\Registration").digitalproductid[0x34..0x42]
             $Version = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\SMS\Setup")."Full Version"
         }
         elseif ($ComputerName -ne $env:COMPUTERNAME) {
-            if (Test-Connection -ComputerName $ComputerName -Count 1 -Quiet -ErrorAction SilentlyContinue) {
+            if (Test-Connection -ComputerName $ComputerName -Count 1 -Quiet -ErrorAction Stop) {
                 $Value = Invoke-Command -ComputerName $ComputerName -ScriptBlock { (get-itemproperty  "HKLM:\SOFTWARE\Microsoft\System Center Configuration Manager\2012\Registration").digitalproductid[0x34..0x42] }
                 $Version = Invoke-Command -ComputerName $ComputerName -ScriptBlock { (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\SMS\Setup")."Full Version" }
             }
@@ -57,6 +58,9 @@ function Get-PSCMLicenseKey {
                     $productkey = "-" + $productkey
                 }
             }
+        }
+        else {
+            Write-Error -Message "Could not determine key"
         }
 
         [PSCustomObject]@{
