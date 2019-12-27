@@ -14,6 +14,9 @@ function Get-PSCMLicenseKey {
 
     .NOTES
     General notes
+
+    .LINK
+    http://eddiejackson.net/wp/?p=22166
     #>
 
     [CmdletBinding()]
